@@ -1,0 +1,113 @@
+---
+title: "Landscape Phase 1"
+author: "Meng Liu"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+pacman::p_load(preregr,tidyverse)
+```
+
+```{r}
+landscape_v1 <-
+  preregr::prereg_initialize(
+    "inclSysRev_v0_92"
+  )
+
+
+
+preregr::prereg_knit_item_content(
+  landscape_v1
+#  section="metadata"
+)
+
+
+preregr::form_show(
+  "inclSysRev_v0_92"
+)
+prereg_show_item_completion(landscape_v1)
+
+```
+
+```{r}
+landscape_v1  <- landscape_v1 %>% 
+prereg_specify(
+    title = "Landscape Phase 1 Literature Review",
+    authors = "tbc",
+    target_discipline = "social sciences",
+    tasks_and_roles = "CRediT statement tbc",
+
+    #Review methods 
+    type_of_review = "bibliometric analysis (conceptual knoweldge structure)",
+    review_stages = "Preparation, Search, Screening, Tagging, Synthesis",
+    current_stage= "Search",
+    start_date = "2022-05-23",
+    end_date = "2022-12-01",
+    background = 
+    "Researchers usually work in silos, without much awareness of or access to what's going on in other fields. The solitary nature of research often means that both within and across disciplines, the sharing of information or best practices relating to reproducible scientific methods is difficult. This can lead to a problem of reinventing the wheel whilst also resulting in knowledge that is biased or misleading (e.g., believing some finding is unique to a certain field when it’s not). Collating an interdisciplinary database of OS literature would help address this issue because it can remove the information barriers and expedite the accumulation of evidence. It is particularly necessary to build one for OS as it is still an emerging topic in many disciplines. Efforts are often isolated and scattered in fields where OS is still a lesser known topic. The lack of coordinated efforts across and within disciplines can give rise to many issues that hinder the progress of science. One commonly acknowledged issue is the jingle-jangle fallacy where the same terms are used to convey different meanings and the same meaning to different terms. For instance, preregistration can be defined as an uneditable and timestamped version of a research protocol, while in healthcare fields pre-registration is a fast-track course that qualifies students into a medical profession. The Glossary project at FORRT is specifically targeted to address this issue by building one central hub with OS terms (Parsons et al., 2022). This project shares the same vision but works towards addressing the issue concerning the literature base. Through mapping the landscape of OS literature, an up-to-date picture can be revealed, facilitating a transparent and timely understanding of current developments of OS in different fields. Therefore, it is important to make efforts to integrate diverse literatures, search for commonalities and uniqueness, identify gaps and areas of consensus. This initiative helps us consolidate what is known about OS and sets us towards cumulative OS. Once a first version of this database has been established, it can be dynamically updated whenever new entries are necessary, possibly using more automated methods.",
+    primary_research_question = "RQ1: What is the volume, growth trajectory, and geographic distribution of the OS literature?
+RQ2: What is the conceptual knowledge structure (e.g., themes and trends) of the OS literature?",
+    secondary_research_question = "N/A",
+    expectations_hypotheses = "N/A",
+    dvs_outcomes_main_vars = "N/A",
+    ivs_intervention_treatment = "N/A",
+    additional_variables = "N/A",
+    software = "R Studio, R 4.2.0",
+    funding = "None",
+    cois = "tbc", 
+    overlapping_authorships = "tbc",
+
+
+    #Search strategy
+    databases = "Web of Science",
+    interfaces = "Web of Science",
+    grey_literature = "Not included",
+    inclusions_exclusion_criteria = 
+"1. in social sciences disciplines (will be narrowed down later)
+2. has open scholarship/research/science as the core topic (e.g.,, not mentioned in passing)",
+    query_strings = 
+    "open science OR open research OR open scholarship in title OR author keyword OR keyword Plus",
+    search_validation_procedure = 
+    "the search should retrive all of the core target papers on the list: 
+    tbc ",
+    other_search_strategies = "None",
+    procedure_for_contacting_authors = 
+    "we will reach out to the corresponding authors by email in the unlikely case of missing abstract AND failure to retrieve full text on our end.",
+    results_of_contacting_authors = "tbc",
+    search_expiration_and_repetition = "search will be frozen once the pre-registration plan is uploaded to OSF",
+    search_strategy_justification = 
+"1. we choose WoS for its high-quality metadata (e.g.,research areas, journal indexing) as our initial database. Grey literature (e.g., OSF preprints, research in languages other than English) was considered during our exploration phase but we decided to against it because the data structure is very different from WoS, most requiring manual downloading, which makes merging difficult and workload unmangeable. Our plan is to incrementally incorporate grey literature in later stages (e.g., as separate/complementary analysis).
+2. we only use the three most general terms regarding open scholarship to keep our search resutls general, which allows for a more meaningful keyword co-occurance analysis.
+3. we only use title, author keyword and keyword plus as the search fields, to narrow down our search results. During the exploration stage, we tried including abstract as the search fields and the quality of the results were staggering, with some only mentioned OS in passing, which did not fit our inclusion criteria. Considering the volume of results was still large (> 7,000) after we excluded abstract from the search field, we believe this is a reasonable strategy.",
+    misc_search_strategy_details = "None",
+
+    #Screening 
+    screening_stages = "Round 1: research area, Round 2: title, keywords and abstracts, Round 1 will be performed automatically using the research area filter in WoS, Round 2 will be performed manually by screeners",
+    screened_fields_masking = "journal, author and publication years will be masked to minimise bias",
+    used_exclusion_criteria = 
+"excludes articles not focused on open science/research/scholarship",
+    screener_instructions = "tbc",
+    screening_reliability = "randomly seclect a proportion to do double coding? tbc",
+    screening_reconciliation_procedure = "if two coders disagree, a third coder/arbitrator will code and the majority vote wins",
+    sampling_and_sample_size = "N/A",
+    screening_procedure_justification = "tbc",
+    misc_screening_details = "None",
+    screening_data_management_and_sharing = "the search results will be stored in bibTex format, which will then be processed in R and output as csv file (e.g., assigning ID and extracting columns for screening). The screening and tagging will take place shared google sheets.",
+    entities_to_extract = "In our case, the extraction stage is the tagging stage. We will first check how many articles are without author keywords, if the number is huge, we will only tag these, while retaining the author supplied keywords in the rest of the articles. If the number is small, we would run some preliminary analysis to examine whether the author keywords are sufficient for analysis. If not, we will refine the keywords to improve the quality. tbc",
+    extraction_stages = "Exploration stage, Reliability verification stage, Final extraction stage",
+    extractor_instructions = "tbc",
+    extractor_blinding = "None",
+    extraction_reliability = "For articles without author keywords, two coders will be used and inconsistensies will be resolved by a third coder. tbc",
+    extraction_reconciliation_procedure = "if two coders disagree, a third coder/arbitrator will code and resolve the inconsistencies.", 
+    extraction_procedure_justification = "tbc",
+    extraction_data_management_and_sharing = "The google sheets used during the process will be shared openly.",
+    misc_extraction_details = "None"
+
+)
+
+prereg_next_item(landscape_v1,
+                 nrOfItems = 4)
+```
+
