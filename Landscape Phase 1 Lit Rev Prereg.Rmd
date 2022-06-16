@@ -40,7 +40,7 @@ prereg_specify(
     tasks_and_roles = "CRediT statement tbc",
 
     #Review methods 
-    type_of_review = "bibliometric analysis (conceptual knoweldge structure)",
+    type_of_review = "bibliometric analysis (conceptual knowledge structure)",
     review_stages = "Preparation, Search, Screening, Tagging, Synthesis",
     current_stage= "Search",
     start_date = "2022-05-23",
@@ -70,7 +70,7 @@ RQ2: What is the conceptual knowledge structure (e.g., themes and trends) of the
     query_strings = 
     "open science OR open research OR open scholarship in title OR author keyword OR keyword Plus",
     search_validation_procedure = 
-    "the search should retrive all of the core target papers on the list: 
+    "the search should retrieve all of the core target papers on the list: 
     tbc ",
     other_search_strategies = "None",
     procedure_for_contacting_authors = 
@@ -78,9 +78,9 @@ RQ2: What is the conceptual knowledge structure (e.g., themes and trends) of the
     results_of_contacting_authors = "tbc",
     search_expiration_and_repetition = "search will be frozen once the pre-registration plan is uploaded to OSF",
     search_strategy_justification = 
-"1. we choose WoS for its high-quality metadata (e.g.,research areas, journal indexing) as our initial database. Grey literature (e.g., OSF preprints, research in languages other than English) was considered during our exploration phase but we decided to against it because the data structure is very different from WoS, most requiring manual downloading, which makes merging difficult and workload unmangeable. Our plan is to incrementally incorporate grey literature in later stages (e.g., as separate/complementary analysis).
-2. we only use the three most general terms regarding open scholarship to keep our search resutls general, which allows for a more meaningful keyword co-occurance analysis.
-3. we only use title, author keyword and keyword plus as the search fields, to narrow down our search results. During the exploration stage, we tried including abstract as the search fields and the quality of the results were staggering, with some only mentioned OS in passing, which did not fit our inclusion criteria. Considering the volume of results was still large (> 7,000) after we excluded abstract from the search field, we believe this is a reasonable strategy.",
+"1. We choose WoS for its high-quality metadata (e.g.,research areas, journal indexing) as our initial database. Grey literature (e.g., OSF preprints, research in languages other than English) was considered during our exploration phase but we decided against it because the data structure is very different from WoS, most requiring manual downloading, which makes merging difficult and workload unmanageable. Our plan is to incrementally incorporate grey literature in later stages (e.g., as separate/complementary analysis).
+2. We only use the three most general terms regarding open scholarship to keep our search results general, which allows for a more meaningful keyword co-occurrence analysis.
+3. We only use title, author keyword and keyword plus as the search fields, to narrow down our search results. During the exploration stage, we tried including abstract as the search fields and the quality of the results were staggering, with some only mentioned OS in passing, which did not fit our inclusion criteria. Considering the volume of results was still large (> 7,000) after we excluded abstract from the search field, we believe this is a reasonable strategy.",
     misc_search_strategy_details = "None",
 
     #Screening 
@@ -89,7 +89,7 @@ RQ2: What is the conceptual knowledge structure (e.g., themes and trends) of the
     used_exclusion_criteria = 
 "excludes articles not focused on open science/research/scholarship",
     screener_instructions = "tbc",
-    screening_reliability = "randomly seclect a proportion to do double coding? tbc",
+    screening_reliability = "randomly select a proportion to do double coding? tbc",
     screening_reconciliation_procedure = "if two coders disagree, a third coder/arbitrator will code and the majority vote wins",
     sampling_and_sample_size = "N/A",
     screening_procedure_justification = "tbc",
@@ -99,7 +99,7 @@ RQ2: What is the conceptual knowledge structure (e.g., themes and trends) of the
     extraction_stages = "Exploration stage, Reliability verification stage, Final extraction stage",
     extractor_instructions = "tbc",
     extractor_blinding = "None",
-    extraction_reliability = "For articles without author keywords, two coders will be used and inconsistensies will be resolved by a third coder. tbc",
+    extraction_reliability = "For articles without author keywords, two coders will be used and inconsistencies will be resolved by a third coder. tbc",
     extraction_reconciliation_procedure = "if two coders disagree, a third coder/arbitrator will code and resolve the inconsistencies.", 
     extraction_procedure_justification = "tbc",
     extraction_data_management_and_sharing = "The google sheets used during the process will be shared openly.",
