@@ -1,0 +1,99 @@
+---
+title: "Landscape Phase 1 Data Collection"
+author: "Meng Liu"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Load libraries
+```{r}
+pacman::p_load(bibliometrix,tidyverse)
+```
+
+# Note on the search
+Search string:
+TI = (“open science” OR “open research” OR “open scholarship”) OR AK = (“open science” OR “open research” OR “open scholarship”) OR KP = (“open science” OR “open research” OR “open scholarship”)
+
+Editions = A&HCI , BKCI-SSH , BKCI-S , CCR-EXPANDED , ESCI , IC , CPCI-SSH , CPCI-S , SCI-EXPANDED , SSCI 
+
+Screenshot of search was saved as "Search screenshot 20220626.png".
+
+Link to query:
+https://www.webofscience.com/wos/woscc/summary/02f9842c-7756-41a7-9229-0798510200fb-401bcfdc/relevance/1
+
+The search returned 2,355 hits.
+
+All fields were then exported as BibTex (in five batches as the maximum export for each batch is 500). 
+
+# Load raw data 
+```{r}
+
+files <- c("raw data/savedrecs(1).bib",
+           "raw data/savedrecs(2).bib",
+           "raw data/savedrecs(3).bib",
+           "raw data/savedrecs(4).bib",
+           "raw data/savedrecs(5).bib")
+
+raw_data <- convert2df(files, dbsource = "wos", format = "bibtex")
+```
+
+
+AU Authors
+TI Document Title
+SO Publication Name (or Source)
+JI ISO Source Abbreviation
+DT Document Type
+DE Authors’ Keywords
+ID Keywords associated by SCOPUS or WoS database
+AB Abstract
+C1 Author Address
+RP Reprint Address
+CR Cited References
+TC Times Cited
+PY Year
+SC Subject Category
+UT Unique Article Identifier
+DB Database
+
+
+# Preprocessing
+```{r}
+# preprocess data 
+data <- raw_data %>% 
+    as_tibble() %>% 
+    # assign unique ID
+    mutate(unique_id = row_number()) %>% 
+    # rename col with descriptive labels
+    rename(title = TI,
+           author_keywords = DE,
+           abstract = AB,
+           keywords_plus = ID,
+           doi = DI)
+```
+
+# Subset pilot sample for screening 
+```{r}
+set.seed(123)
+
+pilot_screening <- data %>%
+    select(unique_id, title, author_keywords, abstract, keywords_plus, doi) %>% 
+    mutate_all(.,str_to_lower) %>% 
+    sample_n(size = 100) 
+    
+rio::export(pilot_screening,"pilot_screening.csv")
+
+```
+
+# Subset pilot sample for tagging 
+```{r}
+set.seed(123)
+
+data %>%
+   summarise(sum(is.na(author_keywords)))
+
+```
+
+At the moment there are 594 without author keywords which is on the large side (especially for double coding). We will wait after screening pilot to see if the number for this is reduced. 
+
+
