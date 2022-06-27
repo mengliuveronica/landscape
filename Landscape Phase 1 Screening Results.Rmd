@@ -26,7 +26,7 @@ df.screening <- read.csv(url_metasheet, stringsAsFactors = F, encoding = 'UTF-8'
     filter(doi != "Example")
 
 # Rename columns
-colnames(df.screening) <- c("uid", "title", "author_keywords",
+colnames(df.screening) <- c("unique_id", "title", "author_keywords",
                             "abstract", "keywords_plus", "doi",
                             "sc_fulltxt_required", "sc_conclusion", 
                             "sc_screener")
@@ -35,7 +35,8 @@ colnames(df.screening) <- c("uid", "title", "author_keywords",
 df.screening.t <- df.screening %>%
     mutate(sc_fulltxt_required = sc_fulltxt_required == 1,
            sc_conclusion = factor(sc_conclusion,
-                               levels = c("include", "exclude", "uncertain"))) 
+                               levels = c("include", "exclude", "uncertain")),
+           unique_id = as.numeric(unique_id)) 
 
 ```
 
@@ -140,16 +141,18 @@ if (!file.exists("data/processed/post_screening.csv")) {
            "raw data/savedrecs(4).bib",
            "raw data/savedrecs(5).bib")
 
-    raw_data <- convert2df(files, dbsource = "wos", format = "bibtex")
+    raw_data <- convert2df(files, dbsource = "wos", format = "bibtex") %>%
+        as_tibble() %>% 
     
-    # Join raw data and screening results by doi
-    # !!! This needs to be replaced with some other field like WoS-ID! !!!
+        # assign unique ID
+        mutate(unique_id = row_number()) 
+    
+    # Join raw data and screening results by row number
     raw_data %>%
-        mutate(doi = DI) %>%
         full_join(
             df.screening.t %>%
-                select(doi, starts_with("sc")),
-            by = "doi"
+                select(unique_id, starts_with("sc")),
+            by = "unique_id",
         ) -> merged
     
     write.csv(merged, "data/processed/post_screening.csv")
