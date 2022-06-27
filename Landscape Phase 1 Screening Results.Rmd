@@ -1,0 +1,161 @@
+---
+title: "Landscape Phase 1 Screening Results"
+author: "Alexander Hart, Meng Liu"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+if (!require(bibliometrix)) install.packages("bibliometrix"); library(bibliometrix)
+if (!require(dplyr)) install.packages("dplyr"); library(dplyr)
+if (!require(ggplot2)) install.packages("ggplot2"); library(ggplot2)
+if (!require(stringr)) install.packages("stringr"); library(stringr)
+```
+
+```{r data}
+# Fetch data
+googlesheet_id <- "<<SHEET ID HERE>>"
+url_metasheet <- paste0("https://docs.google.com/spreadsheets/d/", googlesheet_id, "/export?format=csv")
+df.screening <- read.csv(url_metasheet, stringsAsFactors = F, encoding = 'UTF-8') %>%
+    
+    # Exclude example row
+    filter(doi != "Example")
+
+# Rename columns
+colnames(df.screening) <- c("uid", "title", "author_keywords",
+                            "abstract", "keywords_plus", "doi",
+                            "sc_fulltxt_required", "sc_conclusion", 
+                            "sc_screener")
+
+# Transform columns
+df.screening.t <- df.screening %>%
+    mutate(sc_fulltxt_required = sc_fulltxt_required == 1,
+           sc_conclusion = factor(sc_conclusion,
+                               levels = c("include", "exclude", "uncertain"))) 
+
+```
+
+# Conclusion
+
+```{r plot conclusion}
+ggplot(df.screening.t) +
+    geom_bar(aes(x = sc_conclusion)) +
+    labs(x = "conclusion") +
+    theme_classic()
+```
+
+## Top author keywords included
+
+```{r print top keywords included}
+df.screening.t %>%
+    filter(sc_conclusion == "include") %>%
+    pull(author_keywords) %>%
+    
+    # Isolate keywords
+    str_split(pattern = ";;") %>%
+    sapply(., str_split, pattern = ";") %>%
+    unlist() %>%
+    
+    # Remove excess white space
+    str_trim() %>%
+    
+    # Remove empty strings
+    .[. != ""] -> top_keywords_included
+
+table(top_keywords_included) %>%
+    as.data.frame() %>%
+    arrange(-Freq) %>%
+    head(10) %>%
+    knitr::kable(col.names = c("Keyword", "Frequency"))
+    
+```
+
+## Top keywords excluded
+
+```{r print top keywords excluded}
+df.screening.t %>%
+    filter(sc_conclusion == "exclude") %>%
+    pull(author_keywords) %>%
+    
+    # Isolate keywords
+    str_split(pattern = ";;") %>%
+    sapply(., str_split, pattern = ";") %>%
+    unlist() %>%
+    
+    # Remove excess white space
+    str_trim() %>%
+    
+    # Remove empty strings
+    .[. != ""] -> top_keywords_excluded
+
+table(top_keywords_excluded) %>%
+    as.data.frame() %>%
+    arrange(-Freq) %>%
+    head(10) %>%
+    knitr::kable(col.names = c("Keyword", "Frequency"))
+```
+
+# Full text required
+
+```{r plot ftr}
+ggplot(df.screening.t) +
+    geom_bar(aes(x = sc_fulltxt_required)) +
+    labs(x = "full text required") +
+    theme_classic()
+```
+
+# Uncertain Studies
+
+```{r print classified uncertain}
+df.screening.t %>%
+    filter(sc_conclusion == "uncertain") %>%
+    select(title, doi) %>%
+    knitr::kable(col.names = c("Title", "DOI"))
+    
+```
+
+# Excluded Studies
+
+```{r print classified exclude}
+df.screening.t %>%
+    filter(sc_conclusion == "exclude") %>%
+    select(title, doi) %>%
+    knitr::kable(col.names = c("Title", "DOI"))
+```
+
+
+```{r merge screening results}
+# Check if results were already merged (delete file to remerge)
+
+if (!file.exists("data/processed/post_screening.csv")) {
+    
+    # Load raw data 
+    files <- c("raw data/savedrecs(1).bib",
+           "raw data/savedrecs(2).bib",
+           "raw data/savedrecs(3).bib",
+           "raw data/savedrecs(4).bib",
+           "raw data/savedrecs(5).bib")
+
+    raw_data <- convert2df(files, dbsource = "wos", format = "bibtex")
+    
+    # Join raw data and screening results by doi
+    # !!! This needs to be replaced with some other field like WoS-ID! !!!
+    raw_data %>%
+        mutate(doi = DI) %>%
+        full_join(
+            df.screening.t %>%
+                select(doi, starts_with("sc")),
+            by = "doi"
+        ) -> merged
+    
+    write.csv(merged, "data/processed/post_screening.csv")
+}
+
+```
+
+
+
