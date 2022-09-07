@@ -8,8 +8,8 @@ editor_options:
 ---
 # Load libraries
 ```{r}
-
-pacman::p_load(bibliometrix,tidyverse)
+#install.packages("pacman")
+pacman::p_load(bibliometrix,tidyverse,rio)
 ```
 
 # Note on the search
@@ -71,6 +71,8 @@ data <- raw_data %>%
            abstract = AB,
            keywords_plus = ID,
            doi = DI)
+
+export(data, "data.csv")
 ```
 
 # Subset pilot sample for screening 
@@ -87,14 +89,36 @@ rio::export(pilot_screening,"pilot_screening.csv")
 ```
 
 # Subset pilot sample for tagging 
+
+## Check total n for tagging
 ```{r}
 set.seed(123)
 
-data %>%
-   summarise(sum(is.na(author_keywords)))
+total_n <- data %>%
+   summarise(sum(is.na(author_keywords))) %>% 
+    pull()
+
+sample_n = round(total_n*0.1,0)
 
 ```
 
-At the moment there are 594 without author keywords which is on the large side (especially for double coding). We will wait after screening pilot to see if the number for this is reduced. 
+At the moment there are 594 without author keywords which is on the large side (especially for double coding). We'll pilot a random sample (sample_n = 10% * total_n) to estimate the time/manpower required for tagging.
+
+Below is the code for generating the tagging sample. Note that this sample MAY contain irrelevant papers (i.e., not a dependent sample from the screened dataset). This is to allow us to pilot the tagging process during the hackathon without having to wait for the screening dataset to be processed and generated.
+
+```{r}
+set.seed(123)
+
+pilot_tagging <- data %>% 
+    filter(is.na(author_keywords)) %>% 
+    select(unique_id, title, author_keywords, abstract, keywords_plus, doi) %>% 
+    mutate_all(.,str_to_lower) %>% 
+    sample_n(size = sample_n) 
+    
+rio::export(pilot_tagging,"pilot_tagging.csv")
+
+```
+
+
 
 
