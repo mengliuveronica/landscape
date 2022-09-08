@@ -1,0 +1,185 @@
+---
+title: "Pilot Round 1"
+author: "Meng Liu"
+date: "2022-09-07"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Overview:
+We conducted round 1 piloting in June 2022, the following steps were taken to prepare for the next stage (i.e., screening the entire dataset):
+
+1. downloaded the four google sheets (two for screening and two for tagging) and joined the sheets back to the full dataset (operations for the screening and tagging sheets were done separately as they were independent samples)
+
+2. analysed the screening and tagging results and identified which records require round 2 screening and tagging (i.e., inconsistency reconciliation or final tagging)
+
+3. refined the screening and tagging protocol based on the piloting results 
+
+4. exported records that require screening (including those that require round 2 screening) to generate a g-doc for crowdsourcing
+
+The next step is to screen all the remaining records based on the refined protocol/instructions. 
+
+# Load libraries & Data
+```{r}
+#devtools::install_github('Mikata-Project/ggthemr')
+library(pacman)
+p_load(tidyverse,rio,ggthemr)
+
+theme_set(theme_minimal())
+ggthemr('dust')
+
+data <- read.csv("data.csv", encoding = "UTF-8")
+```
+
+# Screening 
+## Load Sheets
+```{r}
+sheet1 <- read_csv("Pilot R1/Screening Piloting - Sheet1.csv") %>% 
+    rename(screening = `screening (include, exclude, uncertain)`,
+           require_full_text = `require_full_text(1,0)`) %>% 
+    filter(unique_id != "Example")
+
+sheet2 <- read_csv("Pilot R1/Screening Piloting - Sheet2.csv") %>% 
+    rename(screening = `screening (include, exclude, uncertain)`,
+           require_full_text = `require_full_text(1,0)`) %>% 
+    filter(unique_id != "Example")
+
+```
+
+## Match Screening Results
+```{r}
+# Join the two sheets
+sheets <- sheet1 %>% 
+    left_join(sheet2 %>% select(unique_id,screening,screener_id,note,require_full_text), by = "unique_id")
+
+# Match the screening results
+sheets <- sheets %>% 
+    mutate(decision = ifelse(
+        screening.x == screening.y,screening.x, "uncertain"
+    ))
+```
+
+### Visualise the Results
+```{r}
+
+sheets %>% 
+    count(decision) %>% 
+    mutate(pct = n/sum(n)) %>% 
+    arrange(desc(pct)) %>% 
+    ggplot(aes(x="",y=pct,fill=decision))+
+    geom_col()+
+    coord_polar("y",start=0)+
+    theme_void()+
+    theme(legend.position = "none")+
+    ggrepel::geom_label_repel(aes(x=1,y=cumsum(pct) - pct/2, label=paste(str_to_title(decision), scales::percent(pct))))+
+    labs(title="Pilot Screening Round 1 Results",
+         subtitle = "n = 100")
+
+ggsave("r1_screening_results.jpeg")
+```
+
+## Integrate to the Full Dataset
+```{r}
+# Rename columns with r1 prefix
+results <- sheets %>% 
+  rename(r1_screening1 = screening.x,
+         r1_screening2 = screening.y,
+         r1_screener1 = screener_id.x,
+         r1_screener2 = screener_id.y,
+         r1_screen_note1 = note.x,
+         r1_screen_note2 = note.y,
+         r1_require_full_text1 = require_full_text.x,
+         r1_require_full_text2 = require_full_text.y,
+         r1_screening_decision = decision) %>% 
+  select(unique_id,starts_with("r1_")) %>% 
+  mutate(unique_id = as.integer(unique_id))
+
+# Integrate the results
+full_record <- data %>% 
+  left_join(results, by = "unique_id" )
+
+```
+
+# Tagging
+repeat the same steps for the tagging data.
+## Load Sheets
+```{r}
+sheet1 <- read_csv("Pilot R1/Tagging Piloting - Sheet1.csv") %>% 
+    rename(tagged_keywords = `tagged_keywords (use ; to as separator, all small caps)`,
+           require_more_info = `require_more_info (1,0)`) %>% 
+    mutate(tagged_keywords = str_to_lower(tagged_keywords))
+
+sheet2 <- read_csv("Pilot R1/Tagging Piloting - Sheet2.csv") %>% 
+    rename(tagged_keywords = `tagged_keywords (use ; to as separator, all small caps)`,
+           require_more_info = `require_more_info (1,0)`) %>% 
+    mutate(tagged_keywords = str_to_lower(tagged_keywords))
+
+```
+
+## Match Screening Results
+```{r}
+# Join the two sheets
+sheets <- sheet1 %>% 
+    left_join(sheet2 %>% select(unique_id,tagged_keywords,coder_id, note, require_more_info), by = "unique_id")
+
+# Match the screening results
+sheets <- sheets %>% 
+    mutate(keywords = map2_chr(str_split(tagged_keywords.x, ';'), str_split(tagged_keywords.y, ';'), 
+                           ~str_c(intersect(.x, .y), collapse = ";")))
+```
+
+## Inspect the Results 
+```{r}
+sheets %>% 
+  count(keywords) 
+
+```
+The results show 30 entries of "" (i.e., no overlap between the two coders), 6 NAs and one with "open science" as the only extracted keyword which is uninformative. The success rate is not ideal and can potentially exceed our capacity for manual coding but we need to see the amount of articles that require manual coding AFTER we've screened the whole dataset. 
+
+## Integrate to the Full Dataset 
+
+```{r}
+# Rename columns with r1 prefix
+results <- sheets %>% 
+  rename(r1_tagging1 = tagged_keywords.x,
+         r1_tagging2 = tagged_keywords.y,
+         r1_coder1 = coder_id.x,
+         r1_coder2 = coder_id.y,
+         r1_tag_note1 = note.x,
+         r1_tag_note2 = note.y,
+         r1_require_more_info1 = require_more_info.x,
+         r1_require_more_info2 = require_more_info.y,
+         r1_keywords = keywords) %>% 
+  select(unique_id,starts_with("r1_")) %>% 
+  mutate(unique_id = as.integer(unique_id))
+
+# Integrate the results
+full_record <- full_record %>% 
+  left_join(results, by = "unique_id" )
+```
+
+## Sanity Check
+```{r}
+full_record %>% 
+  count(r1_screening_decision)
+
+full_record %>% 
+  count(r1_keywords)
+```
+
+# Save Full Record
+```{r}
+export(full_record,"full_record_20220907.csv")
+```
+
+
+# Export Records for Round 1 Screening 
+```{r}
+full_record %>% 
+  filter(!r1_screening_decision %in% c("include","exclude","uncertain")) %>% 
+  select(unique_id, title, author_keywords, abstract, keywords_plus, doi) %>% 
+  mutate_all(.,str_to_lower) %>% 
+  export("r1_screening.csv")
+```
+
