@@ -22,7 +22,7 @@ landscape_v1 <-
 landscape_v1  <- landscape_v1 %>% 
 prereg_specify(
      title = "The landscape of Open Scholarship across disciplines - Phase 1 Literature Review",
-    authors = "Meng Liu, Alexander Hart, Aleksandra Lazić, Malgorzata Lagisz, Tamara Kalandadze, Bradley Baker, Mahmoud Elsherif, Sandra Grinschgl, Flávio Azevedo",
+    authors = "Meng Liu, Alexander Hart, Aleksandra Lazić, Malgorzata Lagisz, Tamara Kalandadze, Bradley Baker, Mahmoud Elsherif, Sandra Grinschgl, Ciara Egan, Julia Wolska, Flávio Azevedo",
     target_discipline = "multi/interdisciplinary (i.e., no screening in terms of disciplines/research areas)",
     tasks_and_roles = "The record of the tasks and roles of each individual is kept in this google sheet: https://docs.google.com/spreadsheets/d/1EuNNFMuZ5lu9nrutp6DYvCqY-awEx9MvedCHackAJSA/edit?usp=sharing",
 
@@ -44,31 +44,33 @@ prereg_specify(
    - Final analysis",
     current_stage= "Preregister on OSF",
     start_date = "2022-05-23",
-    end_date = "2022-12-01",
+    end_date = "2023-12-31",
     background =
 "Background of the Landscape project 
 
-Researchers usually work in silos, without much awareness of or access to what's going on in other fields. The solitary nature of research often means that both within and across disciplines, the sharing of information or best practices relating to reproducible scientific methods is difficult. This can lead to a problem of reinventing the wheel whilst also resulting in knowledge that is biased or misleading (e.g., believing some finding is unique to a certain field when it is not). Collating an interdisciplinary database of Open Scholarship (OS) literature would help address this issue because it can remove the information barriers and expedite the accumulation of evidence. It is particularly necessary to build one for OS as it is still an emerging topic in many disciplines. Efforts are often isolated and scattered in fields where OS is still a lesser known topic. The lack of coordinated efforts across and within disciplines can give rise to many issues that hinder the progress of science. One commonly acknowledged issue is the jingle-jangle fallacy where the same terms are used to convey different meanings and the same meaning to different terms. For instance, preregistration can be defined as an uneditable and timestamped version of a research protocol, while in healthcare fields preregistration is a fast-track course that qualifies students into a medical profession. The Glossary project at FORRT is specifically targeted to address this issue by building one central hub with OS terms (Parsons et al., 2022). This project shares the same vision but works towards addressing the issue concerning the literature base. Through mapping the topics covered in academic OS literature, an up-to-date picture can be revealed, facilitating a transparent and timely understanding of current developments of OS in different fields. Therefore, it is important to make efforts to integrate diverse literatures, search for commonalities and uniqueness, identify gaps and areas of consensus. This initiative helps us consolidate what is being published about OS and sets us towards cumulative OS. Once a first version of this database has been established, it can be dynamically updated whenever new entries are necessary, possibly using more automated methods.
+Researchers usually work in silos, without much awareness of or access to what's going on in other fields. The solitary nature of research often means that both within and across disciplines, the sharing of information or best practices relating to reproducible scientific methods is difficult. This can lead to a problem of reinventing the wheel whilst also resulting in knowledge that is biased or misleading (e.g., believing some finding is unique to a certain field when it is not). Collating an interdisciplinary database of Open Scholarship (OS) literature would help address this issue because it can remove the information barriers and expedite the accumulation of evidence. It is particularly necessary to build one for OS as it is still an emerging topic in many disciplines. Efforts are often isolated and scattered in fields where OS is still a lesser known topic. The lack of coordinated efforts across and within disciplines can give rise to many issues that hinder the progress of science. One commonly acknowledged issue is the jingle-jangle fallacy where the same terms are used to convey different meanings and the same meaning to different terms. For instance, preregistration can be defined as an uneditable and timestamped version of a research protocol, while in healthcare fields preregistration is a fast-track course that qualifies students into a medical profession. The Glossary project at FORRT is specifically targeted to address this issue by building one central hub with OS terms (Parsons et al., 2022). In addition, it has been shown that the literature within the social sciences is subject to a replicability crisis such that findings are either replicated, not replicated or the direction of findings are shown to be in the opposite direction (Open Science Collaboration, 2015). For instance, studies on anthropomorphism have consistently shown that anthropomorphising gadgets and objects reduces loneliness, while anthropomorphising pets and supernatural beings are found to not replicate (Bartz et al., 2016; Epley et al., 2008; Open Science Collaboration, 2015). The reversal project at FORRT therefore targets the issue by creating one central hub that contains a majority of these findings to support educators and researchers (Hartmann et al., in prep). These projects share the same vision but work towards addressing the issue concerning the literature base. Through mapping the topics covered in academic OS literature, an up-to-date picture can be revealed, facilitating a transparent and timely understanding of current developments of OS in different fields. Therefore, it is important to make efforts to integrate diverse literatures, search for commonalities and uniqueness, identify gaps and areas of consensus. This initiative helps us consolidate what is being published about OS and sets us towards cumulative OS. Once a first version of this database has been established, it can be dynamically updated whenever new entries are necessary, possibly using more automated methods.
 
 Phase 1 of the Landscape project
 
-This preregistration form is for Phase 1 of the project described above. In Phase 1, we will build the base literature using Web of Science (WoS) and perform bibliometric analysis to synthesise the literature. This will be our initial step towards building an interdisciplinary database of OS literature and mapping the landscape of the OS literature. Depending on the results of the bibliometric analysis, we could follow up with in-depth narrative reviews and other complementary analyses.
+This preregistration form is for Phase 1 of the project described above. In Phase 1, we have thus far built the base literature using Web of Science (WoS), and following the completion of screening, will perform bibliometric analysis to synthesise the literature. This is our initial step towards building an interdisciplinary database of OS literature and mapping the landscape of the OS literature. Depending on the results of the bibliometric analysis, we could follow up with in-depth narrative reviews and other complementary analyses.
 
 Workflow for Phase 1
 
 1. Preregistration
     - Search strategy exploration (completed) 
-    - Preregister on OSF
-2. Data collection 
-3. Piloting
-    - Screening piloting 
-    - Tagging piloting
-4. Update preregistration based on piloting
-5. Screening 
+    - Preregister on OSF (completed) 
+2. Data collection (completed) 
+3. Piloting (completed) 
+    - Screening piloting (completed) 
+    - Tagging piloting (completed) 
+4. Update preregistration based on piloting (completed)
+5. Screening (current stage) 
 6. Tagging
 7. Synthesis 
    - Independent analysis 
-   - Final analysis",
+   - Final analysis
+
+Note. the registration template with definitions for each item can be found here: https://osf.io/rd5m6",
     primary_research_question = "
 What is the conceptual knowledge structure (e.g., themes and trends) of the OS literature?",
     secondary_research_question = "What are the descriptive characteristics (e.g., number of publications, growth trajectory, top keywords) of the OS literature in different research fields?",
@@ -79,7 +81,7 @@ What is the conceptual knowledge structure (e.g., themes and trends) of the OS l
     software = "R Studio, R version will be shown in the open code file",
     funding = "None",
     cois = "None",
-    overlapping_authorships = "The list of overlapping authorships will be updated after data collection in the form of supplementary materials.",
+    overlapping_authorships = "The list of overlapping authorships (i.e., authors will be provided in the form of supplementary materials to our research output.",
 
 
     #Search strategy
@@ -87,8 +89,9 @@ What is the conceptual knowledge structure (e.g., themes and trends) of the OS l
     interfaces = "Web of Science",
     grey_literature = "Not included",
     inclusions_exclusion_criteria =
-"1. has open scholarship/research/science as the core topic (e.g., not mentioned in passing, or merely practising open science principles such as sharing data or following preregistration)
-2. the keywords are provided in English (other languages could be added later on according to the coders’ language skills)",
+"1. has open scholarship/research/science as the core topic (e.g., not merely practising open science principles such as sharing data or following preregistration)
+2. the keywords are provided in English (for articles with English keywords but the full text is written in another language, we aim at looking for coders with the respective language skills to screen these; a search of keywords in other languages could be added at a later stage and according to the coders’ language skills)
+For more details on these inclusion/exclusion criteria please see the instruction document  here",
     query_strings =
     'TI = ("open science" OR "open research" OR "open scholarship") OR AK = ("open science" OR "open research" OR "open scholarship") OR KP = ("open science" OR "open research" OR "open scholarship")',
     search_validation_procedure =
@@ -117,10 +120,10 @@ Wagge, J. R., Brandt, M. J., Lazarevic, L. B., Legate, N., Christopherson, C., W
     procedure_for_contacting_authors =
     "we will reach out to the corresponding authors by email in the case of missing abstract AND failure to retrieve full text on our end.",
     results_of_contacting_authors = "We will update the results of contacting authors after the screening stage. If authors provide missing abstracts / full texts, these will be incorporated in the database.",
-    search_expiration_and_repetition = "We’ll conduct the search after the preregistration plan is uploaded to OSF and no repetition will be performed unless over a year has passed when we submit the manuscript.",
+    search_expiration_and_repetition = "We’ll conduct the search after the preregistration plan is uploaded to OSF and no repetition will be performed unless over two years have passed when we submit the manuscript.",
     search_strategy_justification =
 "1. We choose WoS for its high-quality metadata (e.g.,research areas, journal indexing) as our initial database. Grey literature (e.g., OSF preprints, research in languages other than English) was considered during our exploration phase but we decided against it because the data structure is very different from WoS, most requiring manual downloading, which makes merging difficult and workload unmanageable. Our plan is to incrementally incorporate grey literature in later stages (e.g., as separate/complementary analysis).
-2. We only use the three most general terms regarding open scholarship to keep our search results general, which allows for a more meaningful keyword co-occurrence analysis.
+2. We only use the three most general terms (i.e., “open scholarship”, “open research”, “open science”) regarding open scholarship to keep our search results general, which allows for a more meaningful keyword co-occurrence analysis.
 3. We only use title, author keyword and keywords plus as the search fields, to narrow down our search results. During the exploration stage, we tried including abstract as the search fields and the quality of the results were staggering, with some only mentioned OS in passing, which did not fit our inclusion criteria. Considering the volume of results was still large (> 7,000) after we excluded abstract from the search field, we believe this is a reasonable strategy.",
     misc_search_strategy_details = "None",
 
@@ -133,10 +136,10 @@ In this round each article will be screened by two screeners. The screening will
 Round 2: screening reconciliation
 
 In this round only articles with inconsistent codes or at least one "Uncertain" code will be screened. A third coder will code the case and the majority vote will win. If the majority vote is still "Uncertain", the lead analyst will make the final decision.',
-    screened_fields_masking = "Journal, author and publication years will be masked to minimise bias during the initial screening. If full text is required, the screeners will retrieve the full text which unblinds the masking. We will keep a record of which article required full text for screening.",
+    screened_fields_masking = "Journal, author and publication years will be masked to minimise bias during the initial screening. However, if a screener sees that articles that they authored are assigned to them, they should skip those articles and the articles should be assigned to another screener. If full text is required, the screeners will retrieve the full text which unblinds the masking. We will keep a record of which article required full text for screening.",
     used_exclusion_criteria =
-'We will exclude articles that only mention  open science/research/scholarship in passing as well as those that only practise OS (e.g., making data open, following preregistration) or that use the terms as part of a phrase unrelated to OS (e.g., "open research issues")',
-    screener_instructions = "Screeners will be instructed to review the title, abstract, and keywords of the articles yielded from the search. If they are unsure, they will be instructed to download the article and review it in full. They will be instructed to exclude every article that does not deal with the topics of open science/research/scholarship. We will provide definitions of these terms to the screeners.",
+'We will exclude articles that only mention open science/research/scholarship in passing without properly focussing on open science/research/scholarship practices in the article, as well as those that only practise OS (e.g., making data open, following preregistration) or that use the terms as part of a phrase unrelated to OS (e.g., "open research issues")',
+    screener_instructions = "Screeners are provided with screening instructions (see the instruction document here) and are instructed to review the title, abstract, and keywords of the articles yielded from the search. If they are unsure after having completed those steps, they will be instructed to download the article and review it in full. They will be instructed to exclude every article that does not deal with the topics of open science/research/scholarship. The definitions of these terms are included in the instructions provided to the screeners.",
     screening_reliability = "We will perform full double coding for the dataset: Each article will be screened by two coders.",
     screening_reconciliation_procedure = "if two coders disagree, a third coder/arbitrator will code and the majority vote wins",
     sampling_and_sample_size = "The final analysis will be conducted on the screened dataset.",
@@ -164,15 +167,15 @@ In this round each article will be tagged by two coders. The extraction of keywo
 
 Round 2: tagging reconciliation
 
-In this round only articles with inconsistent codes will be tagged by a third coder. Codes extracted by two coders will be retained. Codes extracted by one coder will be removed.  
+In this round, only articles with inconsistent codes will be reviewed by the core project team to come to a final decision (i.e., including the article or not). Thereby, comments of the coders will be taken into account. We will also consider the use of back translation methods to help resolve inconsistencies in keywords generated from articles whose full texts are not in English. 
 
 Round 3: transformation (optional)
 
 Please refer to the above item for details of this option.",
     extractor_instructions = "In the case of manually extracting/tagging author keywords, the coders will be instructed to extract keywords from the title, abstract, and keywords plus. They should extract as many keywords as there are in the specified fields. Coders will extract keywords, as opposed to generating/creating summative/interpretive keywords. If they find the available keywords in the text insufficient/not meaningful, they can flag the article and additional coders (including the lead analyst) will be involved to resolve the issue collectively.",
     extractor_blinding = "None",
-    extraction_reliability = "In the case of manually extracting/tagging author keywords, two coders will be used and inconsistencies will be resolved by a third coder (codes with majority vote will be retained). ",
-    extraction_reconciliation_procedure = "if two coders disagree, a third coder/arbitrator will code and resolve the inconsistencies (codes with majority vote will be retained).",
+    extraction_reliability = "In the case of manually extracting/tagging author keywords, two coders will be used and inconsistencies will be resolved by a third coder (codes with the majority vote will be retained). ",
+    extraction_reconciliation_procedure = "if two coders disagree, a third coder/arbitrator will code and resolve the inconsistencies (codes with the majority vote will be retained).",
     extraction_procedure_justification = "If the total number of articles that require manual extraction is greater than 10, we will pilot the extraction process on a random sample and refine the process accordingly. The sample size will be 10% of the total number or 5, whichever is larger; if the total number of articles that requires manual extraction is less than or equal to 10, we will skip the pilot and employ the process on all articles that require manual extraction.",
     extraction_data_management_and_sharing = "The google sheets used during the process will be shared openly.",
     misc_extraction_details = "None",
@@ -196,6 +199,8 @@ sensitivity_analysis = "The separate/independent analyses conducted during the s
 synthesis_procedure_justification = "Justifications will be updated based on the discussions among the analysts.",
 synthesis_data_management_and_sharing = "Our dataset and code files will be shared on OSF (link here: https://osf.io/9jzup/?view_only=d1a451a0785040928d30d8c912cf9bfb).",
 misc_synthesis_details = "None." )
+
+
 
 ```
 
