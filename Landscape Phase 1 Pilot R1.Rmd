@@ -76,7 +76,7 @@ sheets %>%
     labs(title="Pilot Screening Round 1 Results",
          subtitle = "n = 100")
 
-ggsave("r1_screening_results.jpeg")
+ggsave("pilot_r1_screening_results.jpeg")
 ```
 
 ## Integrate to the Full Dataset
@@ -117,7 +117,7 @@ sheet2 <- read_csv("Pilot R1/Tagging Piloting - Sheet2.csv") %>%
 
 ```
 
-## Match Screening Results
+## Match Tagging Results
 ```{r}
 # Join the two sheets
 sheets <- sheet1 %>% 
@@ -170,7 +170,7 @@ full_record %>%
 
 # Save Full Record
 ```{r}
-export(full_record,"full_record_20220907.csv")
+#export(full_record,"full_record_20220907.csv")
 ```
 
 

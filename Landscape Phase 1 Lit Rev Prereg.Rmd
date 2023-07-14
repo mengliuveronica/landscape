@@ -31,13 +31,13 @@ prereg_specify(
     review_stages = 
 "1. Preregistration
     - Search strategy exploration (completed) 
-    - Preregister on OSF
-2. Data collection 
-3. Piloting
-    - Screening piloting 
-    - Tagging piloting
-4. Update preregistration based on piloting
-5. Screening 
+    - Preregister on OSF (completed) 
+2. Data collection (completed) 
+3. Piloting (completed) 
+    - Screening piloting (completed) 
+    - Tagging piloting (completed) 
+4. Update preregistration based on piloting (completed)
+5. Screening (current stage) 
 6. Tagging
 7. Synthesis 
    - Independent analysis 
@@ -81,7 +81,7 @@ What is the conceptual knowledge structure (e.g., themes and trends) of the OS l
     software = "R Studio, R version will be shown in the open code file",
     funding = "None",
     cois = "None",
-    overlapping_authorships = "The list of overlapping authorships (i.e., authors will be provided in the form of supplementary materials to our research output.",
+    overlapping_authorships = "The list of overlapping authorships between the literature dataset and the research output for this project will be provided in the form of supplementary materials to our research output.",
 
 
     #Search strategy
@@ -153,7 +153,7 @@ In this round only articles with inconsistent codes or at least one "Uncertain" 
 
 For articles with missing author keywords: 
 
-- If the number of articles that require keywords tagging is beyond our capacity (specific number of coders to be updated later), we will use keywords plus (the automatically generated keywords by WoS) to replace the missing values.
+- If the number of articles that require keywords tagging is beyond our capacity (specific number of coders to be updated later), we will use keywords plus (the automatically generated keywords by WoS) to replace the missing values. We will also consider automatic extraction methods to improve the quality of the keywords. 
 
 - If the number of articles that require keywords is within our capacity, we will manually extract keywords from title, abstract and keywords plus. 
 

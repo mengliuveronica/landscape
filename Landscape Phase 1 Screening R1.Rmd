@@ -1,0 +1,201 @@
+---
+title: "Pilot Round 1"
+author: "Meng Liu"
+date: "2022-09-07"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Overview:
+We finished Screening R1 in July 2023, the following steps were taken to prepare for the next stage (i.e., resolving inconsistencies):
+
+1. downloaded the two google sheets (sheet1 and sheet2) and joined the sheets back to the full dataset
+
+2. analysed the screening results and identified which records require round 2 screening (inconsistent records between the two coders)
+
+3. marked records that require Screening R2 to set up a g-doc for crowdsourcing
+
+The next step is to resolve all inconsitencies. 
+
+# Load libraries 
+```{r}
+#devtools::install_github('Mikata-Project/ggthemr')
+library(pacman)
+p_load(tidyverse,rio)
+
+theme_set(theme_minimal())
+
+```
+
+# Load data 
+load the full record from the previous stage: 
+```{r}
+data <- read.csv("full_record_20220907.csv", encoding = "UTF-8")
+```
+
+# Screening 
+## Load Sheets
+```{r}
+sheet1 <- read_csv("Screening R1/Round 1 Screening - Sheet1 (screener_id ODD).csv") %>% 
+    rename(screening = `screening (include, exclude, uncertain)`,
+           require_full_text = `require_full_text(1,0)`) %>% 
+    filter(unique_id != "Example")
+
+sheet2 <- read_csv("Screening R1/Round 1 Screening - Sheet2 (screener_id EVEN).csv") %>% 
+    rename(screening = `screening (include, exclude, uncertain)`,
+           require_full_text = `require_full_text(1,0)`) %>% 
+    filter(unique_id != "Example")
+
+```
+
+## Corret typos
+```{r}
+# Identify typos
+sheet1 %>% 
+  count(screening) %>% pull(screening)
+
+# Corret typos
+sheet1 <- sheet1 %>% 
+  mutate(screening = case_when(
+    screening == "exlcude" ~ "exclude",
+    screening == "incldue" ~ "include",
+    screening == "unsure" ~ "uncertain",
+    TRUE ~ screening
+  ))
+
+# Repeat the same for sheet2 
+sheet2 %>% 
+  count(screening) %>% pull(screening)
+
+sheet2 <- sheet2 %>% 
+  mutate(screening = case_when(
+    screening == "exlcude" ~ "exclude",
+    #screening == "incldue" ~ "include",
+    #screening == "unsure" ~ "uncertain",
+    TRUE ~ screening
+  ))
+
+```
+
+
+## Match Screening Results
+```{r}
+# Join the two sheets
+sheets <- sheet1 %>% 
+    left_join(sheet2 %>% select(unique_id,screening,screener_id,note,require_full_text), by = "unique_id")
+
+
+# Match the screening results
+sheets <- sheets %>% 
+    mutate(decision = ifelse(
+        screening.x == screening.y,screening.x, "inconsistent"
+    ))
+```
+
+### Visualise the Results
+```{r}
+sheets %>% 
+   count(decision) %>% 
+   mutate(pct = n/sum(n)) %>%
+   ggplot(aes(x="", y=pct, fill=decision)) +
+   geom_col(width = 1) +
+   coord_polar(theta = "y") +
+   ggrepel::geom_label_repel(aes(label=paste(str_to_title(decision), scales::percent(pct))), position = position_stack(vjust = 0.5)) + 
+   theme_void() + 
+   theme(legend.position="none") +
+   labs(fill = "Decision", title="Round 1 Screening", x="", y="",
+        subtitle = paste0("n = ",nrow(sheets)))
+
+ggsave("r1_screening_results.jpeg",width = 8,height =6 )
+```
+
+## Integrate to the Full Dataset
+```{r}
+# Extract the pilot screening results 
+
+data <- read.csv("full_record_20220907.csv", encoding = "UTF-8")
+
+pilot <-  data %>% filter(!r1_screening1=="")%>% 
+          select(unique_id,starts_with("r1_")) %>% 
+          # drop cols of pilot tagging 
+          select(-starts_with("r1_tag")) %>% 
+          select(-starts_with("r1_coder")) %>% 
+          select(-starts_with("r1_require_more")) %>%
+          select(-starts_with("r1_key")) %>%
+          mutate(unique_id = as.integer(unique_id))
+
+# Rename columns with r1 prefix
+results <- sheets %>% 
+  rename(r1_screening1 = screening.x,
+         r1_screening2 = screening.y,
+         r1_screener1 = screener_id.x,
+         r1_screener2 = screener_id.y,
+         r1_screen_note1 = note.x,
+         r1_screen_note2 = note.y,
+         r1_require_full_text1 = require_full_text.x,
+         r1_require_full_text2 = require_full_text.y,
+         r1_screening_decision = decision) %>% 
+  select(unique_id,starts_with("r1_")) %>% 
+  mutate(unique_id = as.integer(unique_id))
+
+
+# Combine the results of piloting and screening R1
+combined = rbind(results,pilot)
+# Found a duplicate record in combined and remove it
+combined[duplicated(combined$unique_id), ] %>% pull(unique_id)
+combined <- distinct(combined, unique_id, .keep_all = TRUE)
+# Integrate back to the full record
+
+wos = data %>% 
+          # remove all the manual coding cols to prepare for mergging
+          select(-starts_with("r1_")) %>% 
+          select(-starts_with("r1_tag")) %>% 
+          select(-starts_with("r1_coder")) %>% 
+          select(-starts_with("r1_require_more")) %>%
+          select(-starts_with("r1_key")) %>%
+          mutate(unique_id = as.integer(unique_id))
+
+full_record =
+  left_join(wos,combined,by="unique_id")
+
+
+full_record = full_record %>% 
+  mutate(action_required = case_when(
+    r1_screening_decision%in%c("inconsistent","uncertain") ~ "Y",
+    is.na(r1_screening_decision) ~ "Y",
+    TRUE ~ "N")
+         )
+
+#saveRDS(full_record,"full_record_20230714.rds")
+# the full record was saved as RDS to prevent data loss as some metadata from WoS were too long to be preseved as is in excel
+
+r2_screening = full_record %>% 
+select(unique_id, action_required, title, author_keywords, abstract, keywords_plus, doi,starts_with("r1_")) 
+
+#export(r2_screening,"r2_screening_sheet.csv")
+
+```
+
+# Tabulation of screener contribution
+```{r}
+tb1 = full_record %>% 
+  count(r1_screener1) %>% 
+  rename(screener = r1_screener1)
+
+tb2 = full_record %>% 
+  count(r1_screener2) %>% 
+  rename(screener = r1_screener2)
+
+contribution = rbind(tb1,tb2) %>% 
+  filter(!is.na(screener)) %>% 
+  group_by(screener) %>% 
+  summarise(n=sum(n),.groups = "drop") 
+
+tibble(screener = 1:57) %>% 
+  left_join(contribution,by="screener") %>% 
+
+  export("screener_contribution.csv")
+
+```
+
